@@ -6,10 +6,10 @@
 # Node artifact files
 node_modules/
 dist/
-
+coverage
 # Compiled Java class files
 *.class
-
+tests
 # Compiled Python bytecode
 *.py[cod]
 
