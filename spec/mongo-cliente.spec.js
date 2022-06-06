@@ -7,6 +7,12 @@ jest.mock('mongodb', () => ({
   },
 }));
 
+let client = {
+  db: jest.fn(),
+};
+
+let err = false;
+
 let result;
 describe('Given MongoCliente is started', () => {
   describe('When method criarConexao is called', () => {
@@ -25,11 +31,20 @@ describe('Given MongoCliente is started', () => {
       );
     });
 
-    // it('Then ', () => {
-    //   mongodb.MongoClient.connect.mockRejectedValue(() =>
-    //     Promise.reject('value')
-    //   );
-    //   expect(result).toEqual('e');
-    // });
+    describe('And succeeds', () => {
+      it('Then call client.db', () => {
+        const callback = mongodb.MongoClient.connect.mock.calls[0][2];
+        callback(err, client);
+        expect(client.db).toHaveBeenCalledWith('test');
+      });
+    });
+
+    describe('And fails', () => {
+      it('Then call client.db', () => {
+        const callback = mongodb.MongoClient.connect.mock.calls[0][2];
+        err = true;
+        callback(err, client);
+      });
+    });
   });
 });
