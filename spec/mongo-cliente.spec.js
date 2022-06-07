@@ -1,5 +1,5 @@
 const mongoCliente = require('../src/mongo-cliente');
-const mongodb = require('mongodb');
+const mockMongodb = require('mongodb');
 
 jest.mock('mongodb', () => ({
   MongoClient: {
@@ -21,11 +21,11 @@ describe('Given MongoCliente is started', () => {
     beforeEach(() => {
       jest.clearAllMocks();
       result = mongoCliente.criarConexao();
-      callback = mongodb.MongoClient.connect.mock.calls[0][2];
+      callback = mockMongodb.MongoClient.connect.mock.calls[0][2];
     });
 
     it('Then call connect', () => {
-      expect(mongodb.MongoClient.connect).toHaveBeenCalledWith(
+      expect(mockMongodb.MongoClient.connect).toHaveBeenCalledWith(
         'mongodb://localhost:27017/',
         { useNewUrlParser: true },
         expect.any(Function)
