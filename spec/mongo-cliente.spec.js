@@ -8,19 +8,20 @@ jest.mock('mongodb', () => ({
 }));
 
 let client = {
-  db: jest.fn(),
+  db: jest.fn((str) => str),
 };
 
-let err = false;
+let err;
 
 let result;
+let callback;
+
 describe('Given MongoCliente is started', () => {
   describe('When method criarConexao is called', () => {
     beforeEach(() => {
-      mongodb.MongoClient.connect
-        .mockResolvedValueOnce('first call')
-        .mockRejectedValueOnce(new Error('Async error message'));
+      jest.clearAllMocks();
       result = mongoCliente.criarConexao();
+      callback = mongodb.MongoClient.connect.mock.calls[0][2];
     });
 
     it('Then call connect', () => {
@@ -33,15 +34,13 @@ describe('Given MongoCliente is started', () => {
 
     describe('And succeeds', () => {
       it('Then call client.db', () => {
-        const callback = mongodb.MongoClient.connect.mock.calls[0][2];
         callback(err, client);
         expect(client.db).toHaveBeenCalledWith('test');
       });
     });
 
     describe('And fails', () => {
-      it('Then call client.db', () => {
-        const callback = mongodb.MongoClient.connect.mock.calls[0][2];
+      it('Then ', () => {
         err = true;
         callback(err, client);
       });
