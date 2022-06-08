@@ -20,6 +20,7 @@ describe('Given MongoCliente is started', () => {
   describe('When method criarConexao is called', () => {
     beforeEach(() => {
       jest.clearAllMocks();
+      new mongoCliente();
       result = mongoCliente.criarConexao();
       callback = mockMongodb.MongoClient.connect.mock.calls[0][2];
     });
@@ -33,16 +34,31 @@ describe('Given MongoCliente is started', () => {
     });
 
     describe('And succeeds', () => {
-      it('Then call client.db', () => {
+      beforeEach(() => {
         callback(err, client);
+      });
+
+      it('Then call client.db', () => {
         expect(client.db).toHaveBeenCalledWith('test');
+      });
+
+      it('Then return a value', async () => {
+        await result.then((r) => {
+          expect(r).toBe('test');
+        });
       });
     });
 
     describe('And fails', () => {
-      it('Then ', () => {
+      beforeEach(() => {
         err = true;
         callback(err, client);
+      });
+
+      it('Then return true', async () => {
+        await result.catch((r) => {
+          expect(r).toBe(true);
+        });
       });
     });
   });
