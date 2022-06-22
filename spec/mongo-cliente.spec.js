@@ -35,6 +35,7 @@ describe('Given MongoCliente is started', () => {
 
     describe('And succeeds', () => {
       beforeEach(() => {
+        err = false;
         callback(err, client);
       });
 

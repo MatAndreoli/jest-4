@@ -7,12 +7,15 @@
   "license": "MIT",
   "scripts": {
     "test": "./node_modules/.bin/jest --config jest.conf.js",
-    "test:watch": "./node_modules/.bin/jest --watchAll"
+    "test:watch": "./node_modules/.bin/jest --watchAll",
+    "stryker": "node_modules/.bin/stryker run"
   },
   "dependencies": {
     "mongodb": "^4.6.0"
   },
   "devDependencies": {
+    "@stryker-mutator/core": "^4.5.1",
+    "@stryker-mutator/jest-runner": "^4.6.0",
     "@types/jest": "^27.5.1",
     "@types/mongodb": "^4.0.7",
     "jest": "^26.6.3",
