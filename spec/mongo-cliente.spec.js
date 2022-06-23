@@ -44,22 +44,33 @@ describe('Given MongoCliente is started', () => {
       });
 
       it('Then return a value', async () => {
-        await result.then((r) => {
-          expect(r).toBe('test');
-        });
+        await result
+          .then((r) => {
+            expect(r).toBe('test');
+          })
+          .catch((r) => {
+            expect(r).toBeUndefined();
+          });
       });
     });
 
     describe('And fails', () => {
       beforeEach(() => {
+        jest.clearAllMocks();
+        result = mongoCliente.criarConexao();
+        callback = mockMongodb.MongoClient.connect.mock.calls[0][2];
         err = true;
         callback(err, client);
       });
 
       it('Then return true', async () => {
-        await result.catch((r) => {
-          expect(r).toBe(true);
-        });
+        await result
+          .then((e) => {
+            expect(e).toBeUndefined();
+          })
+          .catch((r) => {
+            expect(r).toBe(true);
+          });
       });
     });
   });
